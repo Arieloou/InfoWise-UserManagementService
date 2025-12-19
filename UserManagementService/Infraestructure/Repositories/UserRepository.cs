@@ -32,7 +32,7 @@ namespace UserManagementService.Infraestructure.Repositories
                 throw new Exception("The user and/or password are incorrect.");
             }
 
-            return _jWTResponseGenerator.Generate(user!.Email, "client");
+            return _jWTResponseGenerator.Generate(user!.Email, "client", userInDB.Id.ToString());
         }
 
         public async Task<JWTResponse> Register(User user)
@@ -41,7 +41,10 @@ namespace UserManagementService.Infraestructure.Repositories
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            return _jWTResponseGenerator.Generate(user.Email, "client");
+            var userInDB = await _context.Users
+                .FirstAsync(u => u.Email == user.Email);
+
+            return _jWTResponseGenerator.Generate(user.Email, "client", userInDB.Id.ToString());
         }
     }
 }

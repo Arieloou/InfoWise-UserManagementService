@@ -1,18 +1,20 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Microsoft.IdentityModel.Tokens;
 using UserManagementService.Interfaces.JWT;
+using UserManagementService.Models;
 
 namespace UserManagementService.Infraestructure.JWT
 {
     public class JWTGenerator(IConfiguration configuration) : IJWTGenerator
     {
-        public string GenerateToken(string email, string role)
+        public string GenerateToken(string email, string role, string userId)
         {
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Sub, userId),
+                new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(ClaimTypes.Role, role)
             };
 

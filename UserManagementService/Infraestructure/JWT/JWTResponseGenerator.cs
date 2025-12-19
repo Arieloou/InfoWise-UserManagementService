@@ -13,13 +13,14 @@ namespace UserManagementService.Infraestructure.JWT
             _jWTGenerator = jWTGenerator;
         }
 
-        public JWTResponse Generate(string email, string role)
+        public JWTResponse Generate(string email, string role, string userId)
         {
             return new JWTResponse
             {
-                Token = _jWTGenerator.GenerateToken(email, role),
+                Token = _jWTGenerator.GenerateToken(email, role, userId),
                 Email = email,
                 Role = role,
+                UserId = userId
             };
         }
     }
