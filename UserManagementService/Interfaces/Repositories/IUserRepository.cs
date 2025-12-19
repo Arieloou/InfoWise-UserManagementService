@@ -1,6 +1,10 @@
-﻿namespace UserManagementService.Interfaces.Repositories
+﻿using UserManagementService.Models;
+
+namespace UserManagementService.Interfaces.Repositories
 {
-    public class UserRepository
+    public interface IUserRepository
     {
+        public Task<JWTResponse> Login(User user);
+        public Task<JWTResponse> Register(User user);
     }
 }
