@@ -2,20 +2,20 @@
 using UserManagementService.Interfaces.UserTools;
 using UserManagementService.Models;
 
-namespace UserManagementService.Infraestructure.JWT
+namespace UserManagementService.Infrastructure.JWT
 {
-    public class JWTResponseGenerator : IJWTResponseGenerator
+    public class JwtResponseGenerator : IJWTResponseGenerator
     {
         private readonly IJWTGenerator _jWTGenerator;
 
-        public JWTResponseGenerator(IJWTGenerator jWTGenerator)
+        public JwtResponseGenerator(IJWTGenerator jWTGenerator)
         {
             _jWTGenerator = jWTGenerator;
         }
 
-        public JWTResponse Generate(string email, string role, string userId)
+        public JwtResponse Generate(string email, string role, string userId)
         {
-            return new JWTResponse
+            return new JwtResponse
             {
                 Token = _jWTGenerator.GenerateToken(email, role, userId),
                 Email = email,

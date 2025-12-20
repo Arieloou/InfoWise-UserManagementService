@@ -5,9 +5,9 @@ using System.Security.Cryptography;
 using UserManagementService.Interfaces.JWT;
 using UserManagementService.Models;
 
-namespace UserManagementService.Infraestructure.JWT
+namespace UserManagementService.Infrastructure.JWT
 {
-    public class JWTGenerator(IConfiguration configuration) : IJWTGenerator
+    public class JwtGenerator(IConfiguration configuration) : IJWTGenerator
     {
         public string GenerateToken(string email, string role, string userId)
         {

@@ -1,7 +1,7 @@
 ﻿namespace UserManagementService.Models
 {
 
-    public class JWTResponse
+    public class JwtResponse
     {
         public required string Token { get; set; }
         public required string UserId { get; set; }

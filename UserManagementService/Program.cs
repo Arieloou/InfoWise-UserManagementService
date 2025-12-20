@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using UserManagementService.Application.UserTools;
-using UserManagementService.Infraestructure;
-using UserManagementService.Infraestructure.JWT;
-using UserManagementService.Infraestructure.Repositories;
+using UserManagementService.Infrastructure;
+using UserManagementService.Infrastructure.JWT;
+using UserManagementService.Infrastructure.Repositories;
 using UserManagementService.Interfaces.JWT;
 using UserManagementService.Interfaces.Repositories;
 using UserManagementService.Interfaces.UserTools;
@@ -16,11 +16,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationDBContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IJWTGenerator, JWTGenerator>();
-builder.Services.AddScoped<IJWTResponseGenerator, JWTResponseGenerator>();
+builder.Services.AddScoped<IJWTGenerator, JwtGenerator>();
+builder.Services.AddScoped<IJWTResponseGenerator, JwtResponseGenerator>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     db.Database.Migrate();
 }
 

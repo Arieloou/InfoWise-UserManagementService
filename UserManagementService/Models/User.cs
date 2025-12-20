@@ -8,7 +8,7 @@ namespace UserManagementService.Models
     public class User
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -19,7 +19,8 @@ namespace UserManagementService.Models
         [DataType(DataType.Password)]
         [NotMapped]
         public required string? Password { get; set; }
-
-        public string? PasswordHash { get; set; }
+        [Required]
+        public required string PasswordHash { get; set; }
+        public ICollection<UserPreference> Preferences { get; set; } = new List<UserPreference>();
     }
 }

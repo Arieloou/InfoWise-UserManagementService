@@ -4,7 +4,7 @@ namespace UserManagementService.Interfaces.UserTools
 {
     public interface IJWTResponseGenerator
     {
-        public JWTResponse Generate(string email, string role, string userId);
+        public JwtResponse Generate(string email, string role, string userId);
 
     }
 }
