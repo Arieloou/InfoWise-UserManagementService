@@ -11,8 +11,8 @@ using UserManagementService.Infrastructure;
 namespace UserManagementService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251219010534_Create_Users_Table")]
-    partial class Create_Users_Table
+    [Migration("20251226133335_Create_Application_Tables")]
+    partial class Create_Application_Tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,7 @@ namespace UserManagementService.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -46,6 +47,44 @@ namespace UserManagementService.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("UserManagementService.Models.UserPreference", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("SubscribedCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "SubscribedCategoryId")
+                        .IsUnique();
+
+                    b.ToTable("UserPreferences");
+                });
+
+            modelBuilder.Entity("UserManagementService.Models.UserPreference", b =>
+                {
+                    b.HasOne("UserManagementService.Models.User", "User")
+                        .WithMany("Preferences")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UserManagementService.Models.User", b =>
+                {
+                    b.Navigation("Preferences");
                 });
 #pragma warning restore 612, 618
         }

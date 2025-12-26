@@ -16,7 +16,7 @@ namespace UserManagementService.Controllers
         }
         
         [HttpPost("{userId}/preferences")]
-        public async Task<IActionResult> SetPreferences(Guid userId, [FromBody] int[] categoryIds)
+        public async Task<IActionResult> SetPreferences(int userId, [FromBody] int[] categoryIds)
         {
             await _service.SetUserPreferences(userId, categoryIds);
 

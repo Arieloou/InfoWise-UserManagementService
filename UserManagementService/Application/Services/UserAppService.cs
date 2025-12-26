@@ -6,7 +6,7 @@ namespace UserManagementService.Application.Services
 {
     public class UserAppService(IUserRepository userRepository, IProducer producer)
     {
-        public async Task SetUserPreferences(Guid userId, int[] categoryIds)
+        public async Task SetUserPreferences(int userId, int[] categoryIds)
         {
             // 1. Guardar en UserDB (tabla UserPreferences)
             await userRepository.SavePreferences(userId, categoryIds);

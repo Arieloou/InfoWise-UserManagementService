@@ -35,7 +35,7 @@ namespace UserManagementService.Infrastructure.Repositories
             return jWtResponseGenerator.Generate(user.Email, "client", userInDb.Id.ToString());
         }
 
-        public async Task<User?> GetUserById(Guid id)
+        public async Task<User?> GetUserById(int id)
         {
             return await context.Users.FindAsync(id);
         }
@@ -45,7 +45,7 @@ namespace UserManagementService.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task SavePreferences(Guid userId, int[] categoryIds)
+        public async Task SavePreferences(int userId, int[] categoryIds)
         {
             var existingPreferences = await context.UserPreferences
                 .Where(up => up.UserId == userId)

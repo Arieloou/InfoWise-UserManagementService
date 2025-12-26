@@ -7,11 +7,8 @@ public class UserPreference
 {
     [Key]
     public int Id { get; set; }
-    
-    public Guid UserId { get; set; }
-    
-    [ForeignKey("UserId")]
-    public User User { get; set; }
-    
+    [ForeignKey(nameof(User))]
+    public int UserId { get; set; }
+    public User? User { get; set; }
     public int SubscribedCategoryId { get; set; }
 }
