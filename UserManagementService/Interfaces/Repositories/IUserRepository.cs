@@ -8,6 +8,5 @@ namespace UserManagementService.Interfaces.Repositories
         public Task<JwtResponse> Register(User user);
         public Task<User?> GetUserById(int id);
         public Task<JwtResponse> RefreshToken(string refreshToken);
-        public Task SavePreferences(int userId, int[] categoryIds);
     }
 }

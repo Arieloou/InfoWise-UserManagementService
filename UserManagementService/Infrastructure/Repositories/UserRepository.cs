@@ -44,28 +44,5 @@ namespace UserManagementService.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
-
-        public async Task SavePreferences(int userId, int[] categoryIds)
-        {
-            var existingPreferences = await context.UserPreferences
-                .Where(up => up.UserId == userId)
-                .ToListAsync();
-            
-            // We delete the existing user preference to reset all of them
-            if (existingPreferences.Any())
-            {
-                context.UserPreferences.RemoveRange(existingPreferences);
-            }
-            
-            var newPreferences = categoryIds.Select(categoryId => new UserPreference
-            {
-                UserId = userId,
-                SubscribedCategoryId = categoryId
-            }).ToList();
-
-            await context.UserPreferences.AddRangeAsync(newPreferences);
-            
-            await context.SaveChangesAsync();
-        }
     }
 }
