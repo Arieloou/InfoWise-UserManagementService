@@ -5,7 +5,7 @@ using UserManagementService.Interfaces.Repositories;
 namespace UserManagementService.Controllers
 {
     [ApiController]
-    [Route("{controller}")]
+    [Route("user")]
     public class UsersController : Controller
     {
         private readonly UserAppService _service;
@@ -15,7 +15,7 @@ namespace UserManagementService.Controllers
             _service = service;
         }
         
-        [HttpPost("{userId}/preferences")]
+        [HttpPost("{userId}/configure/preferences")]
         public async Task<IActionResult> SetPreferences(int userId, [FromBody] int[] categoryIds)
         {
             await _service.SetUserPreferences(userId, categoryIds);
