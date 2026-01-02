@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using UserManagementService.Application.Services;
-using UserManagementService.Models;
+using UserManagementService.Infrastructure.DTOs;
 
 namespace UserManagementService.Controllers
 {
@@ -11,49 +12,75 @@ namespace UserManagementService.Controllers
         [HttpPost("{userId}/preferences")]
         public async Task<IActionResult> SetPreferences(int userId, [FromBody] int[] categoryIds)
         {
-            await service.SetUserPreferences(userId, categoryIds);
-            return Ok();
+            try
+            {
+                await service.SetUserPreferences(userId, categoryIds);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Internal error: " + e.Message);
+            }
         }
 
         [HttpGet("{userId}/preferences")]
         public async Task<IActionResult> GetPreferences(int userId)
         {
-            var preferences = await service.GetUserPreferences(userId);
-            return Ok(preferences);
+            try
+            {
+                var preferences = await service.GetUserPreferences(userId);
+                return Ok(preferences);
+            }
+            catch
+            {
+                return Conflict("The user doesn't have any preference configured.");
+            }
         }
         
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] User? user)
+        public async Task<IActionResult> Register([FromBody] UserDto? userDto)
         {
-            if (user == null || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
+            if (userDto == null || string.IsNullOrEmpty(userDto.Email) || string.IsNullOrEmpty(userDto.Password))
             {
                 return Unauthorized("User is empty.");
             }
 
             try
             {
-                var response = await service.RegisterUser(user);
+                var response = await service.RegisterUser(userDto);
                 return Ok(response);
             }
-            catch
+            catch (DbUpdateException ex) 
             {
-                return Conflict("The user already exists.");
+                // Postgres code for unique foreign key violation
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("23505")) 
+                {
+                    return Conflict("The user already exists.");
+                }
+                
+                logger.LogError(ex, "Error trying to register a new user");
+                return StatusCode(500, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Unexpected error");
+                return StatusCode(500, ex.Message);
             }
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] User? user)
+        public async Task<IActionResult> Login([FromBody] UserDto? userDto)
         {
-            if (user?.Password == null)
+            if (userDto?.Password == null)
             {
                 return Unauthorized("User is empty.");
             }
 
             try
             {
-                var response = await service.LoginUser(user);
+                var response = await service.LoginUser(userDto);
                 return Ok(response);
             }
             catch (Exception e)

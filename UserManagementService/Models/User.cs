@@ -20,7 +20,9 @@ namespace UserManagementService.Models
         [NotMapped]
         public required string? Password { get; set; }
         [Required]
+        [MaxLength(255)]
         public required string PasswordHash { get; set; }
-        public ICollection<UserPreference> Preferences { get; set; } = new List<UserPreference>();
+
+        public ICollection<UserPreference>? Preferences { get; set; } = [];
     }
 }

@@ -5,7 +5,7 @@ using UserManagementService.Interfaces.RabbitMQ;
 
 namespace UserManagementService.Infrastructure.RabbitMQ.Publishers
 {
-    public class Producer
+    public class Producer : IProducer
     {
         private readonly IQueueConnection _queueConnection;
         private readonly ILogger<Producer> _logger;

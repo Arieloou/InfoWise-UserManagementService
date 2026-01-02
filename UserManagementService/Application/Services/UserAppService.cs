@@ -1,12 +1,19 @@
-﻿using UserManagementService.Infrastructure.RabbitMQ.Events;
+﻿using UserManagementService.Infrastructure.DTOs;
+using UserManagementService.Infrastructure.RabbitMQ.Events;
 using UserManagementService.Interfaces.RabbitMQ;
 using UserManagementService.Interfaces.Repositories;
 using UserManagementService.Models;
 
 namespace UserManagementService.Application.Services
 {
-    public class UserAppService(IUserRepository userRepository, IUserPreferenceRepository preferenceRepository, IProducer producer)
+    public class UserAppService(
+        IUserRepository userRepository, 
+        IUserPreferenceRepository preferenceRepository, 
+        IProducer producer)
     {
+        private const string Exchange = "user.exchange";
+        private const string RoutingKey = "preferences.configured";
+
         public async Task SetUserPreferences(int userId, int[] categoryIds)
         {
             // 1. Guardar en UserPreferences
@@ -25,8 +32,7 @@ namespace UserManagementService.Application.Services
                     CategoryIds = categoryIds.ToList()
                 };
     
-                // Usando MassTransit o tu cliente RabbitMQ
-                await producer.PublishAsync(eventMessage, "user.exchange", "preferences.configured");
+                await producer.PublishAsync(eventMessage, Exchange, RoutingKey);
             }
         }
 
@@ -35,14 +41,14 @@ namespace UserManagementService.Application.Services
             return await preferenceRepository.GetPreferences(userId);
         }
 
-        public async Task<JwtResponse> LoginUser(User user)
+        public async Task<JwtResponse> LoginUser(UserDto userDto)
         {
-            return await userRepository.Login(user);
+            return await userRepository.Login(userDto);
         }
         
-        public async Task<JwtResponse> RegisterUser(User user)
+        public async Task<JwtResponse> RegisterUser(UserDto userDto)
         {
-            return await userRepository.Register(user);
+            return await userRepository.Register(userDto);
         }
     }   
 }
