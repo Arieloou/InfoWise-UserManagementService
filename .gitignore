@@ -64,6 +64,7 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+**/Properties/launchSettings.json
 
 # Tye
 .tye/
@@ -482,3 +483,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Private key
+*.pem

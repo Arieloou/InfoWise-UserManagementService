@@ -9,20 +9,6 @@ namespace UserManagementService.Controllers
     [Route("user")]
     public class UserController(UserAppService service, ILogger<UserController> logger) : Controller
     {
-        [HttpPost("{userId}/preferences")]
-        public async Task<IActionResult> SetPreferences(int userId, [FromBody] int[] categoryIds)
-        {
-            try
-            {
-                await service.SetUserPreferences(userId, categoryIds);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest("Internal error: " + e.Message);
-            }
-        }
-
         [HttpGet("{userId}/preferences")]
         public async Task<IActionResult> GetPreferences(int userId)
         {
@@ -37,6 +23,20 @@ namespace UserManagementService.Controllers
             }
         }
         
+        [HttpPost("preferences/upsert")]
+        public async Task<IActionResult> SetPreferences([FromBody] UserPreferencesDto userPreferencesDto)
+        {
+            try
+            {
+                await service.SetUserPreferences(userPreferencesDto.UserId, userPreferencesDto.CategoryIds);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Internal error: " + e.Message);
+            }
+        }
+        
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] UserDto? userDto)
@@ -48,8 +48,8 @@ namespace UserManagementService.Controllers
 
             try
             {
-                var response = await service.RegisterUser(userDto);
-                return Ok(response);
+                var jwtResponse = await service.RegisterUser(userDto);
+                return Ok(jwtResponse);
             }
             catch (DbUpdateException ex) 
             {
@@ -80,8 +80,8 @@ namespace UserManagementService.Controllers
 
             try
             {
-                var response = await service.LoginUser(userDto);
-                return Ok(response);
+                var jwtResponse = await service.LoginUser(userDto);
+                return Ok(jwtResponse);
             }
             catch (Exception e)
             {

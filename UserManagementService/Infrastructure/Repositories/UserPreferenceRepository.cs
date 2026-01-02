@@ -6,7 +6,7 @@ namespace UserManagementService.Infrastructure.Repositories;
 
 public class UserPreferenceRepository(ApplicationDbContext context) : IUserPreferenceRepository
 {
-    public async Task SavePreferences(int userId, int[] categoryIds)
+    public async Task SavePreferences(int userId, List<int> categoryIds)
     {
         var existingPreferences = await context.UserPreferences
             .Where(up => up.UserId == userId)

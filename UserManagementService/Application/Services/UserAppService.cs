@@ -14,7 +14,7 @@ namespace UserManagementService.Application.Services
         private const string Exchange = "user.exchange";
         private const string RoutingKey = "preferences.configured";
 
-        public async Task SetUserPreferences(int userId, int[] categoryIds)
+        public async Task SetUserPreferences(int userId, List<int> categoryIds)
         {
             // 1. Guardar en UserPreferences
             await preferenceRepository.SavePreferences(userId, categoryIds);
