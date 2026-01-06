@@ -3,5 +3,5 @@
 public class UserPreferencesDto
 {
     public required int UserId { get; set; }
-    public List<int>? CategoryIds { get; set; }
+    public required List<int> CategoryIds { get; set; }
 }
