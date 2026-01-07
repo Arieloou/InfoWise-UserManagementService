@@ -10,12 +10,12 @@ namespace UserManagementService.Controllers
     public class UserController(UserAppService service, ILogger<UserController> logger) : Controller
     {
         [HttpGet("{userId}/preferences")]
-        public async Task<IActionResult> GetPreferences(int userId)
+        public async Task<ActionResult<UserPreferencesDto>> GetPreferences(int userId)
         {
             try
             {
-                var preferences = await service.GetUserPreferences(userId);
-                return Ok(preferences);
+                var response = await service.GetUserPreferences(userId);
+                return Ok(response);
             }
             catch
             {
@@ -28,8 +28,8 @@ namespace UserManagementService.Controllers
         {
             try
             {
-                await service.SetUserPreferences(userPreferencesDto.UserId, userPreferencesDto.CategoryIds);
-                return Ok();
+                var response = await service.SetUserPreferences(userPreferencesDto);
+                return Ok(response);
             }
             catch (Exception e)
             {

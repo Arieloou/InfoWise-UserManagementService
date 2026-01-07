@@ -13,7 +13,7 @@ namespace UserManagementService.Infrastructure
             base.OnModelCreating(modelBuilder);
             
             modelBuilder.Entity<UserPreference>()
-                .HasIndex(p => new { p.UserId, p.SubscribedCategoryId })
+                .HasIndex(p => new { p.UserId })
                 .IsUnique();
         }
     }

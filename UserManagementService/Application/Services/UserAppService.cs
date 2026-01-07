@@ -14,29 +14,29 @@ namespace UserManagementService.Application.Services
         private const string Exchange = "user.exchange";
         private const string RoutingKey = "preferences.configured";
 
-        public async Task SetUserPreferences(int userId, List<int> categoryIds)
+        public async Task<bool> SetUserPreferences(UserPreferencesDto userPreferencesDto)
         {
-            // 1. Guardar en UserPreferences
-            await preferenceRepository.SavePreferences(userId, categoryIds);
-    
-            // 2. Obtener email del usuario
-            var user = await userRepository.GetUserById(userId);
+            var user = await userRepository.GetUserById(userPreferencesDto.UserId);
 
             if (user != null)
             {
-                // 3. Publicar evento de integración para que otros servicios se enteren
                 var eventMessage = new UserPreferencesUpdatedEvent() 
                 {
-                    UserId = userId,
+                    UserId = userPreferencesDto.UserId,
                     Email = user.Email,
-                    CategoryIds = categoryIds.ToList()
+                    CategoryIds = userPreferencesDto.CategoryIds
                 };
-    
+                
+                await preferenceRepository.SavePreferences(userPreferencesDto.UserId, userPreferencesDto.CategoryIds);
                 await producer.PublishAsync(eventMessage, Exchange, RoutingKey);
+                
+                return true;
             }
+            
+            return false;
         }
 
-        public async Task<UserPreference?> GetUserPreferences(int userId)
+        public async Task<UserPreferencesDto?> GetUserPreferences(int userId)
         {
             return await preferenceRepository.GetPreferences(userId);
         }

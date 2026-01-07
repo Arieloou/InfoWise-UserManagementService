@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -32,7 +33,7 @@ namespace UserManagementService.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    SubscribedCategoryId = table.Column<int>(type: "integer", nullable: false)
+                    SubscribedCategoryIds = table.Column<List<int>>(type: "integer[]", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,9 +47,9 @@ namespace UserManagementService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPreferences_UserId_SubscribedCategoryId",
+                name: "IX_UserPreferences_UserId",
                 table: "UserPreferences",
-                columns: new[] { "UserId", "SubscribedCategoryId" },
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(

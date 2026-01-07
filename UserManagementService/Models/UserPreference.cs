@@ -10,5 +10,5 @@ public class UserPreference
     [ForeignKey(nameof(User))]
     public int UserId { get; set; }
     public User? User { get; set; }
-    public int SubscribedCategoryId { get; set; }
+    public required List<int> SubscribedCategoryIds { get; set; }
 }
