@@ -12,8 +12,8 @@ using UserManagementService.Infrastructure;
 namespace UserManagementService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260106231233_Create_Application_Tables")]
-    partial class Create_Application_Tables
+    [Migration("20260114003535_Create_Applicatiopn_Tables")]
+    partial class Create_Applicatiopn_Tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,6 +58,9 @@ namespace UserManagementService.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ShippingHour")
+                        .HasColumnType("integer");
 
                     b.Property<List<int>>("SubscribedCategoryIds")
                         .IsRequired()

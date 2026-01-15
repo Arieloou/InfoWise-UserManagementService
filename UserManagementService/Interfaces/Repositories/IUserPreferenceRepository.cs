@@ -5,6 +5,6 @@ namespace UserManagementService.Interfaces.Repositories;
 
 public interface IUserPreferenceRepository
 {
-    public Task SavePreferences(int userId, List<int> categoryIds);
+    public Task SavePreferences(UserPreferencesDto userPreferencesDto);
     public Task<UserPreferencesDto?> GetPreferences (int userId);
 }

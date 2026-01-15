@@ -7,27 +7,29 @@ namespace UserManagementService.Infrastructure.Repositories;
 
 public class UserPreferenceRepository(ApplicationDbContext context) : IUserPreferenceRepository
 {
-    public async Task SavePreferences(int userId, List<int> categoryIds)
+    public async Task SavePreferences(UserPreferencesDto userPreferencesDto)
     {
         var existingPreferences = await context.UserPreferences
-            .FirstOrDefaultAsync(up => up.UserId == userId);
+            .FirstOrDefaultAsync(up => up.UserId == userPreferencesDto.UserId);
     
         // If the user doesn't have any preferences, they are added. Else, they are updated.
         if (existingPreferences != null)
         {
-            existingPreferences.SubscribedCategoryIds = categoryIds;
+            existingPreferences.SubscribedCategoryIds = userPreferencesDto.CategoryIds;
             
             await context.UserPreferences.
-                Where(up => up.UserId == userId).
+                Where(up => up.UserId == userPreferencesDto.UserId).
                 ExecuteUpdateAsync(setters => setters
-                    .SetProperty(p => p.SubscribedCategoryIds, categoryIds));
+                    .SetProperty(p => p.SubscribedCategoryIds, userPreferencesDto.CategoryIds)
+                    .SetProperty(p => p.ShippingHour, userPreferencesDto.ShippingHour));
         }
         else
         {
             var newPreferences = new UserPreference
             {
-                UserId = userId,
-                SubscribedCategoryIds = categoryIds
+                UserId = userPreferencesDto.UserId,
+                ShippingHour = userPreferencesDto.ShippingHour,
+                SubscribedCategoryIds = userPreferencesDto.CategoryIds
             };
 
             await context.UserPreferences.AddAsync(newPreferences);
@@ -44,6 +46,7 @@ public class UserPreferenceRepository(ApplicationDbContext context) : IUserPrefe
             Select(preference => new UserPreferencesDto
             {
                 UserId = preference.UserId,
+                ShippingHour =  preference.ShippingHour,
                 CategoryIds =  preference.SubscribedCategoryIds
             } ).
             FirstOrDefaultAsync();

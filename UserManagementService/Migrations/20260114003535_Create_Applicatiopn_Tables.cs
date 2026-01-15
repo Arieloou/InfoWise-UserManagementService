@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace UserManagementService.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_Application_Tables : Migration
+    public partial class Create_Applicatiopn_Tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,7 @@ namespace UserManagementService.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
+                    ShippingHour = table.Column<int>(type: "integer", nullable: false),
                     SubscribedCategoryIds = table.Column<List<int>>(type: "integer[]", nullable: false)
                 },
                 constraints: table =>

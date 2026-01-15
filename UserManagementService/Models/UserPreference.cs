@@ -7,8 +7,13 @@ public class UserPreference
 {
     [Key]
     public int Id { get; set; }
+    
     [ForeignKey(nameof(User))]
     public int UserId { get; set; }
+    
+    [Required]
+    public int ShippingHour { get; set; }
+    
     public User? User { get; set; }
     public required List<int> SubscribedCategoryIds { get; set; }
 }

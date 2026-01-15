@@ -24,10 +24,11 @@ namespace UserManagementService.Application.Services
                 {
                     UserId = userPreferencesDto.UserId,
                     Email = user.Email,
+                    ShippingHour =  userPreferencesDto.ShippingHour,
                     CategoryIds = userPreferencesDto.CategoryIds
                 };
                 
-                await preferenceRepository.SavePreferences(userPreferencesDto.UserId, userPreferencesDto.CategoryIds);
+                await preferenceRepository.SavePreferences(userPreferencesDto);
                 await producer.PublishAsync(eventMessage, Exchange, RoutingKey);
                 
                 return true;

@@ -56,6 +56,9 @@ namespace UserManagementService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ShippingHour")
+                        .HasColumnType("integer");
+
                     b.Property<List<int>>("SubscribedCategoryIds")
                         .IsRequired()
                         .HasColumnType("integer[]");
