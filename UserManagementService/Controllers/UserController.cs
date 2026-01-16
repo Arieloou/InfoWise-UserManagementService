@@ -26,6 +26,12 @@ namespace UserManagementService.Controllers
         [HttpPost("preferences/upsert")]
         public async Task<IActionResult> SetPreferences([FromBody] UserPreferencesDto userPreferencesDto)
         {
+
+            if (userPreferencesDto.ShippingHour < 0 || userPreferencesDto.ShippingHour > 23)
+            {
+                return BadRequest("Shipping hours must be between 0 and 23.");
+            }
+                
             try
             {
                 var response = await service.SetUserPreferences(userPreferencesDto);
