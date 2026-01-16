@@ -27,4 +27,8 @@ RUN dotnet publish "./UserManagementService.csproj" -c $BUILD_CONFIGURATION -o /
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+RUN openssl genrsa -out private.pem 2048
+RUN openssl rsa -in private.pem -pubout -out public.pem
+
 ENTRYPOINT ["dotnet", "UserManagementService.dll"]
