@@ -11,7 +11,7 @@ namespace UserManagementService.Application.Services
         IUserPreferenceRepository preferenceRepository, 
         IProducer producer)
     {
-        private const string Exchange = "user.exchange";
+        private const string Exchange = "infowise.users_exhange";
         private const string RoutingKey = "preferences.configured";
 
         public async Task<bool> SetUserPreferences(UserPreferencesDto userPreferencesDto)

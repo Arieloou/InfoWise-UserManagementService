@@ -15,6 +15,8 @@ namespace UserManagementService.Infrastructure
             modelBuilder.Entity<UserPreference>()
                 .HasIndex(p => new { p.UserId })
                 .IsUnique();
+            
+            
         }
     }
 }
